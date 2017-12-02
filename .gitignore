@@ -1,0 +1,66 @@
+### https://raw.github.com/github/gitignore/1ee8dd15d6aa5adbdd7f575143c6be4dc5dea56b/Global/OSX.gitignore
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must ends with two \r.
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+
+
+
+### https://raw.github.com/github/gitignore/1ee8dd15d6aa5adbdd7f575143c6be4dc5dea56b/Global/vim.gitignore
+
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
+
+
+### https://raw.github.com/github/gitignore/1ee8dd15d6aa5adbdd7f575143c6be4dc5dea56b/Java.gitignore
+
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+
+### https://raw.github.com/github/gitignore/1ee8dd15d6aa5adbdd7f575143c6be4dc5dea56b/Gradle.gitignore
+
+.gradle
+build/
+
+
+### https://raw.github.com/github/gitignore/1ee8dd15d6aa5adbdd7f575143c6be4dc5dea56b/Maven.gitignore
+
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+
