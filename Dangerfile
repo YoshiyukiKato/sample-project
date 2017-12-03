@@ -16,9 +16,10 @@ fail "This PR has no changes at all" if git.modified_files.empty? && git.added_f
 
 # report checkstyle
 github.dismiss_out_of_range_messages
-checkstyle_format.base_path = Dir.pwd
-checkstyle_format.report 'build/reports/checkstyle/main.xml'
-checkstyle_format.report 'build/reports/checkstyle/test.xml'
+warn("dangerいるよー")
+##checkstyle_format.base_path = Dir.pwd
+##checkstyle_format.report 'build/reports/checkstyle/main.xml'
+##checkstyle_format.report 'build/reports/checkstyle/test.xml'
 
 # add lgtm pic
 # lgtm.check_lgtm
