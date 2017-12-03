@@ -3,7 +3,7 @@
  */
 public class App {
     public String getGreeting() {
-        return "Hello world? Why jenkins cant catch this change?";
+        return "Hello world! Token permission updated";
     }
 
     public static void main(String[] args) {
