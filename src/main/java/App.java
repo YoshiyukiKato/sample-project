@@ -3,8 +3,8 @@
  */
 public class App {
     public String getGreeting() {
-        return "Hello world! for jenkins:)";
-    }
+        return "Hello world! in master ;)";
+    
 
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
