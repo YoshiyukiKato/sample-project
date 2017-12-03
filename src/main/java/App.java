@@ -3,7 +3,7 @@
  */
 public class App {
     public String getGreeting() {
-        return "Hello world! in master ;)";
+        return "Hello world!!";
     
 
     public static void main(String[] args) {
