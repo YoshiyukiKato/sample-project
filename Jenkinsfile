@@ -30,11 +30,6 @@ node {
             }
         }
 
-        // dangerを実行する
-        stage("danger"){
-            //結果はgithubに通知
-        }
-
         // gradleとかmavenでビルド実行
         stage("build") {
             withEnv(["PATH+NODE=${JENKINS_HOME}/.nvm/versions/node/v6.9.5/bin/"]) {
@@ -45,6 +40,13 @@ node {
             }
         }
 
+        // dangerを実行する
+        stage("danger"){
+            //結果はgithubに通知
+            sh "bundle install --path vendor/bundle"
+            sh "bundle exec danger"
+        }
+
         // コードのテスト
         stage("test") {
             withEnv(["PATH+NODE=${JENKINS_HOME}/.nvm/versions/node/v6.9.5/bin/"]) {
@@ -52,27 +54,6 @@ node {
                 if(!TEST_RESULT) {
                     error "testに失敗しました"
                 }
-            }
-        }
-
-        // コードマージ
-        stage("merge code") {
-            // ブランチの切替
-            def CHECKOUT_RESULT = sh(script: "cd ./${repo_name} && git checkout ${release_branch}", returnStatus: true) == 0
-            if(!CHECKOUT_RESULT) {
-                error "checkoutに失敗しました"
-            }
-
-            // マージ
-            def MERGE_RESULT = sh(script: "cd ./${repo_name} && git merge ${dev_branch}", returnStatus: true) == 0
-            if(!MERGE_RESULT) {
-                error "マージに失敗しました"
-            }
-
-            // リモートへプッシュ
-            def PUSH_RESULT = sh(script: "cd ./${repo_name} && git push origin ${release_branch}:${release_branch}", returnStatus: true) == 0
-            if(!PUSH_RESULT) {
-                error "プッシュに失敗しました"
             }
         }
 
