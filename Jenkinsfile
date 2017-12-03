@@ -1,59 +1,29 @@
+
+
 node {
     try {
-        // ソースの取得
-        stage("get resource") {
-            // カレントディレクトにgitリポジトリが存在するか否かの確認
-            if(fileExists("./${repo_name}") && fileExists("./${repo_name}/.git")) {
-                // フェッチ
-                def FETCH_RESULT = sh(script: "cd ./${repo_name} && git fetch --all", returnStatus: true) == 0
-                if(!FETCH_RESULT) {
-                    // throw error
-                    error "fetchに失敗しました"
-                }
-                // gitがある場合はpull
-                def PULL_RESULT = sh(script: "cd ./${repo_name} && git pull --all", returnStatus: true) == 0
-                if(!PULL_RESULT) {
-                    error "pullに失敗しました"
-                }
-                // ブランチの切替
-                def CHECKOUT_RESULT = sh(script: "cd ./${repo_name} && git checkout ${dev_branch}", returnStatus: true) == 0
-                if(!CHECKOUT_RESULT) {
-                    // throw error
-                    error "checkoutに失敗しました"
-                }
-            } else {
-                // gitがない場合はclone
-                def CLONE_RESULT = sh(script: "git clone ${git_url} ${repo_name}", returnStatus: true) == 0
-                if(!CLONE_RESULT) {
-                    error "cloneに失敗しました"
-                }
-            }
+        stage("checkout source") {
+            checkout scm
         }
 
-        // gradleとかmavenでビルド実行
-        stage("build") {
-            withEnv(["PATH+NODE=${JENKINS_HOME}/.nvm/versions/node/v6.9.5/bin/"]) {
-                def NPM_RESULT = sh(script: "cd ./${repo_name} && npm install", returnStatus: true) == 0
-                if(!NPM_RESULT) {
-                    error "npm installに失敗しました"
-                }
-            }
-        }
-
-        // dangerを実行する
-        stage("danger"){
+        // checkstyle -> dangerを実行する
+        stage("code style check"){
             //結果はgithubに通知
+            def CHECKSTYLE_RESULT = sh(script: "./gradlew -q checkstyle", returnStatus: true) == 0
             sh "bundle install --path vendor/bundle"
             sh "bundle exec danger"
+
+            if(!CHECKSTYLE_RESULT){
+                error "checkstyleに失敗しました"
+            }
         }
 
-        // コードのテスト
-        stage("test") {
-            withEnv(["PATH+NODE=${JENKINS_HOME}/.nvm/versions/node/v6.9.5/bin/"]) {
-                def TEST_RESULT = sh(script: "cd ./${repo_name} && npm test", returnStatus: true) == 0
-                if(!TEST_RESULT) {
-                    error "testに失敗しました"
-                }
+
+        // コードのビルド
+        stage("build project") {
+            def BUILD_RESULT = sh(script: "./gradlew build", returnStatus: true) == 0
+            if(!BUILD_RESULT){
+                error "buildに失敗しました"
             }
         }
 
@@ -64,11 +34,12 @@ node {
         if(currentBuild.result != "FAILURE") {
             currentBuild.result = "SUCCESS"
         }
-        notification(err_msg)
+        //notification(err_msg)
     }
 }
 
 // 実行結果のSlack通知
+/*
 def notification(msg) {
     def slack_channel = "#jenkins"  // jenkinsが通知するチャネル
     def slack_domain = ""           // slackのドメイン名 https://mydomain.slack.comのmydomainの部分
@@ -83,3 +54,4 @@ def notification(msg) {
     def slack_msg = "job ${env.JOB_NAME}[No.${env.BUILD_NUMBER}] was builded ${currentBuild.result}. ${detail_link} \n\n ${msg}"
     slackSend channel: "${slack_channel}", color: "${slack_color}", message: "${slack_msg}", teamDomain: "${slack_domain}", token: "${slack_token}"
 }
+*/

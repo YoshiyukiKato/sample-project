@@ -9,22 +9,16 @@ end
 # message "JIRA Ticket: <a href='http://jira.example.com/jira/browse/#{match[1]}'>#{match[1]}</a>" if match
 
 # a PR without any changes is invalid
-fail "This PR has no changes at all" if git.modified_files.empty? &amp;&amp; git.added_files.empty? &amp;&amp; git.deleted_files.empty?
+fail "This PR has no changes at all" if git.modified_files.empty? && git.added_files.empty? && git.deleted_files.empty?
 
 # check release note has changed when a release/* branch is created
 # warn "Please change release note in <a href='https://ghe.example.com/HAT/HatalikeSwift/blob/#{github.branch_for_head}/fastlane/Deliverfile'>Deliverfile</a>" if github.branch_for_head.start_with?("release") &amp;&amp; !git.modified_files.include?("fastlane/Deliverfile")
 
-# run swiftlint
-# github.dismiss_out_of_range_messages
-# swiftlint.config_file = '.swiftlint.yml'
-# swiftlint.lint_files inline_mode: true
-
-# run checkstyle
-# TODO: ここの設定を書く
+# report checkstyle
 github.dismiss_out_of_range_messages
 checkstyle_format.base_path = Dir.pwd
-checkstyle_format.report 'app/build/reports/checkstyle/checkstyle.xml' #ここのパスは変える必要あり
-
+checkstyle_format.report 'build/reports/checkstyle/main.xml'
+checkstyle_format.report 'build/reports/checkstyle/test.xml'
 
 # add lgtm pic
-lgtm.check_lgtm
+# lgtm.check_lgtm
