@@ -15,7 +15,7 @@ fail "This PR has no changes at all" if git.modified_files.empty? && git.added_f
 # warn "Please change release note in <a href='https://ghe.example.com/HAT/HatalikeSwift/blob/#{github.branch_for_head}/fastlane/Deliverfile'>Deliverfile</a>" if github.branch_for_head.start_with?("release") &amp;&amp; !git.modified_files.include?("fastlane/Deliverfile")
 
 # report checkstyle
-github.dismiss_out_of_range_messages
+# github.dismiss_out_of_range_messages
 warn("dangerいるよー")
 ##checkstyle_format.base_path = Dir.pwd
 ##checkstyle_format.report 'build/reports/checkstyle/main.xml'
